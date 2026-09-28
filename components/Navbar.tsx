@@ -1,2 +1,65 @@
-"use client"; import { Github, Wrench } from "lucide-react"; import { SearchBar } from "./SearchBar"; import { ThemeToggle } from "./ThemeToggle"; import type { RefObject } from "react";
-export function Navbar({query,setQuery,dark,toggleTheme,searchRef}:{query:string;setQuery:(q:string)=>void;dark:boolean;toggleTheme:()=>void;searchRef:RefObject<HTMLInputElement>}){return <header className="sticky top-0 z-20 flex h-16 items-center gap-3 border-b bg-white/80 px-4 backdrop-blur dark:bg-[#0A0A0A]/80 lg:pl-72"><div className="flex min-w-max items-center gap-2 lg:hidden"><Wrench className="h-5 w-5 text-indigo-500"/><span className="font-bold">DevToolkit</span></div><div className="mx-auto w-full max-w-md"><SearchBar value={query} onChange={setQuery} inputRef={searchRef}/></div><div className="ml-auto flex items-center"><a className="btn-ghost h-9 w-9 p-0" href="https://github.com" target="_blank" rel="noreferrer" aria-label="GitHub"><Github className="h-4 w-4"/></a><ThemeToggle dark={dark} onToggle={toggleTheme}/><span className="ml-2 hidden text-xs font-medium text-zinc-500 sm:block">BITSANDBYTESDUDE</span></div></header>}
+"use client";
+
+import { Github, Wrench } from "lucide-react";
+import { SearchBar } from "./SearchBar";
+import { ThemeToggle } from "./ThemeToggle";
+import type { RefObject } from "react";
+
+export function Navbar({
+  query,
+  setQuery,
+  searchRef,
+  onGoHome,
+  dark,
+  toggleTheme,
+}: {
+  query: string;
+  setQuery: (q: string) => void;
+  searchRef: RefObject<HTMLInputElement>;
+  onGoHome?: () => void;
+  dark?: boolean;
+  toggleTheme?: () => void;
+}) {
+  return (
+    <header className="sticky top-0 z-20 flex h-16 items-center gap-3 border-b bg-white/80 px-4 backdrop-blur dark:bg-[#0A0A0A]/80 lg:pl-72">
+      <button
+        onClick={onGoHome}
+        className="flex items-center gap-2 text-left transition-opacity hover:opacity-80 focus:outline-none"
+        title="Return to Home"
+      >
+        <div className="grid h-8 w-8 place-items-center rounded-md bg-indigo-500 text-white">
+          <Wrench className="h-4 w-4" />
+        </div>
+        <div className="hidden sm:block lg:hidden">
+          <span className="font-bold">DevToolkit</span>
+        </div>
+      </button>
+
+      <div className="mx-auto w-full max-w-md">
+        <SearchBar value={query} onChange={setQuery} inputRef={searchRef} />
+      </div>
+
+      <div className="ml-auto flex items-center gap-1">
+        <a
+          className="btn-ghost h-9 w-9 p-0"
+          href="https://github.com/BITSANDBYTESDUDE"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="GitHub Repository"
+          title="GitHub"
+        >
+          <Github className="h-4 w-4" />
+        </a>
+        <ThemeToggle dark={dark} onToggle={toggleTheme} />
+        <a
+          href="https://bitsandbytesdude.vercel.app"
+          target="_blank"
+          rel="noreferrer"
+          className="ml-2 hidden text-xs font-medium text-zinc-500 hover:text-indigo-500 sm:block dark:text-zinc-400 dark:hover:text-indigo-400"
+        >
+          BITSANDBYTESDUDE
+        </a>
+      </div>
+    </header>
+  );
+}
