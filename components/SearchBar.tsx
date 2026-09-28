@@ -1,0 +1,2 @@
+"use client"; import { Search } from "lucide-react"; import type { RefObject } from "react";
+export function SearchBar({value,onChange,inputRef}:{value:string;onChange:(value:string)=>void;inputRef?:RefObject<HTMLInputElement>}){return <label className="relative block"><Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400"/><input ref={inputRef} className="control pl-9" value={value} onChange={e=>onChange(e.target.value)} placeholder="Search tools..." aria-label="Search tools"/></label>}
