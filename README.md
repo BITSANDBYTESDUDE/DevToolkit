@@ -9,7 +9,7 @@
 
 ---
 
-## 🧰 Tools Available (18 Tools)
+##  Tools Available (18 Tools)
 
 | Category | Tool Name | Description |
 | :--- | :--- | :--- |
@@ -34,19 +34,19 @@
 
 ---
 
-## ✨ Features
+##  Features
 
-- ⚡ **100% Client-Side**: All data processing stays inside your browser for maximum privacy and zero latency.
-- 🎨 **Modern Minimalist UI**: Crafted with Linear/Vercel design aesthetic, smooth glassmorphism, and Framer Motion micro-animations.
-- 🌙 **Dark Mode Default**: Sleek dark interface with smooth dark/light mode toggle saved to `localStorage`.
-- ⭐ **Favorites & History**: Star your most used tools and access your 5 recently used tools quickly in the sidebar.
-- 🔍 **Instant Real-Time Search**: Filter tools by name or category instantly using sidebar search or keyboard shortcut `/`.
-- 📋 **One-Click Copy**: Copy button with visual feedback on all outputs.
-- 📱 **Fully Responsive**: Optimized for desktop, tablet, and mobile displays.
+-  **100% Client-Side**: All data processing stays inside your browser for maximum privacy and zero latency.
+-  **Modern Minimalist UI**: Crafted with Linear/Vercel design aesthetic, smooth glassmorphism, and Framer Motion micro-animations.
+-  **Dark Mode Default**: Sleek dark interface with smooth dark/light mode toggle saved to `localStorage`.
+-  **Favorites & History**: Star your most used tools and access your 5 recently used tools quickly in the sidebar.
+-  **Instant Real-Time Search**: Filter tools by name or category instantly using sidebar search or keyboard shortcut `/`.
+-  **One-Click Copy**: Copy button with visual feedback on all outputs.
+-  **Fully Responsive**: Optimized for desktop, tablet, and mobile displays.
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 - **Node.js**: v18.0.0 or higher
@@ -122,7 +122,7 @@ DevToolkit/
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 | Technology | Purpose |
 | :--- | :--- |
@@ -138,7 +138,7 @@ DevToolkit/
 
 ---
 
-## 🌐 Deploy on Vercel
+##  Deploy on Vercel
 
 The easiest way to deploy your DevToolkit app is to use the Vercel Platform:
 
@@ -146,7 +146,7 @@ The easiest way to deploy your DevToolkit app is to use the Vercel Platform:
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 
 Contributions, issues, and feature requests are welcome! Feel free to check out [issues page](https://github.com/BITSANDBYTESDUDE/DevToolkit/issues).
 
@@ -165,5 +165,5 @@ Distributed under the MIT License. See `LICENSE` for details.
 ---
 
 <p align="center">
-  Crafted with ❤️ by <strong>BITSANDBYTESDUDE</strong>
+  Crafted with  by <strong>BITSANDBYTESDUDE</strong>
 </p>
