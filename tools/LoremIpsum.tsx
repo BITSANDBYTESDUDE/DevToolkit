@@ -1,1 +1,64 @@
-"use client"; import { useMemo,useState } from "react"; import { CopyButton } from "@/components/CopyButton"; const source='Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum'.split(' ');const sentence=(n:number,offset:number)=>source.slice(0,n).map((w,i)=>i===0?w[0].toUpperCase()+w.slice(1):w).join(' ') + '.';export default function LoremIpsum(){const [type,setType]=useState('paragraphs'),[count,setCount]=useState(3);const out=useMemo(()=>type==='words'?Array.from({length:count},(_,i)=>source[i%source.length]).join(' '):type==='sentences'?Array.from({length:count},(_,i)=>sentence(12,i)).join(' '):Array.from({length:count},(_,i)=>Array.from({length:4},(_,j)=>sentence(12,i+j)).join(' ')).join('\n\n'),[type,count]);return <section className="space-y-4"><div className="flex flex-wrap gap-3"><select className="control w-40" value={type} onChange={e=>setType(e.target.value)}><option value="words">Words</option><option value="sentences">Sentences</option><option value="paragraphs">Paragraphs</option></select><input className="control w-24" type="number" min="1" max="100" value={count} onChange={e=>setCount(Math.min(100,Math.max(1,Number(e.target.value))))}/><CopyButton value={out}/></div><pre className="panel min-h-48 whitespace-pre-wrap p-4 text-sm leading-6">{out}</pre></section>}
+"use client";
+
+import { useMemo, useState } from "react";
+import { CopyButton } from "@/components/CopyButton";
+
+const source =
+  "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum".split(
+    " "
+  );
+
+const sentence = (n: number, offset: number) =>
+  source
+    .slice(0, n)
+    .map((w, i) => (i === 0 ? w[0].toUpperCase() + w.slice(1) : w))
+    .join(" ") + ".";
+
+export default function LoremIpsum() {
+  const [type, setType] = useState("paragraphs");
+  const [count, setCount] = useState(3);
+
+  const out = useMemo(
+    () =>
+      type === "words"
+        ? Array.from({ length: count }, (_, i) => source[i % source.length]).join(
+            " "
+          )
+        : type === "sentences"
+        ? Array.from({ length: count }, (_, i) => sentence(12, i)).join(" ")
+        : Array.from({ length: count }, (_, i) =>
+            Array.from({ length: 4 }, (_, j) => sentence(12, i + j)).join(" ")
+          ).join("\n\n"),
+    [type, count]
+  );
+
+  return (
+    <section className="space-y-4">
+      <div className="flex flex-wrap gap-2 sm:gap-3">
+        <select
+          className="control w-full xs:w-40"
+          value={type}
+          onChange={(e) => setType(e.target.value)}
+        >
+          <option value="words">Words</option>
+          <option value="sentences">Sentences</option>
+          <option value="paragraphs">Paragraphs</option>
+        </select>
+        <input
+          className="control w-20 sm:w-24"
+          type="number"
+          min="1"
+          max="100"
+          value={count}
+          onChange={(e) =>
+            setCount(Math.min(100, Math.max(1, Number(e.target.value))))
+          }
+        />
+        <CopyButton value={out} />
+      </div>
+      <pre className="panel min-h-36 whitespace-pre-wrap p-3 text-xs leading-5 sm:min-h-48 sm:p-4 sm:text-sm sm:leading-6">
+        {out}
+      </pre>
+    </section>
+  );
+}

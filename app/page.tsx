@@ -7,6 +7,7 @@ import { Navbar } from "@/components/Navbar";
 import { Sidebar } from "@/components/Sidebar";
 import { ToolGrid } from "@/components/ToolGrid";
 import { Footer } from "@/components/Footer";
+import { SearchBar } from "@/components/SearchBar";
 import { useSearch } from "@/hooks/useSearch";
 import { tools, type ToolCategory, type ToolId } from "@/lib/tools-config";
 
@@ -56,6 +57,7 @@ export default function Home() {
   const [selected, setSelected] = useState<ToolId | null>(null);
   const [favorites, setFavorites] = useState<ToolId[]>([]);
   const [recent, setRecent] = useState<ToolId[]>([]);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
 
   const filtered = useSearch(query, category);
@@ -79,10 +81,26 @@ export default function Home() {
         e.preventDefault();
         searchRef.current?.focus();
       }
+      // Close mobile sidebar on Escape
+      if (e.key === "Escape" && sidebarOpen) {
+        setSidebarOpen(false);
+      }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [sidebarOpen]);
+
+  // Lock body scroll when mobile sidebar is open
+  useEffect(() => {
+    if (sidebarOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [sidebarOpen]);
 
   const choose = (id: ToolId) => {
     setSelected(id);
@@ -117,6 +135,7 @@ export default function Home() {
         setQuery={setQuery}
         searchRef={searchRef}
         onGoHome={goHome}
+        onMenuToggle={() => setSidebarOpen((o) => !o)}
       />
       <Sidebar
         query={query}
@@ -128,9 +147,16 @@ export default function Home() {
         onSelect={choose}
         onGoHome={goHome}
         searchRef={searchRef}
+        mobileOpen={sidebarOpen}
+        onMobileClose={() => setSidebarOpen(false)}
       />
 
-      <main className="flex-1 mx-auto w-full max-w-7xl px-4 py-8 lg:ml-[260px] lg:px-8">
+      <main className="flex-1 mx-auto w-full max-w-7xl px-3 py-6 sm:px-4 sm:py-8 lg:ml-[260px] lg:px-8">
+        {/* Mobile-only search bar (visible below sm since Navbar hides it) */}
+        <div className="mb-4 sm:hidden">
+          <SearchBar value={query} onChange={setQuery} inputRef={searchRef} />
+        </div>
+
         <AnimatePresence mode="wait">
           {tool && Tool ? (
             <motion.section
@@ -141,23 +167,23 @@ export default function Home() {
               transition={{ duration: 0.2 }}
             >
               <button
-                className="btn-ghost mb-6 -ml-2 text-sm text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+                className="btn-ghost mb-4 -ml-1 text-sm text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white sm:mb-6 sm:-ml-2"
                 onClick={goHome}
               >
                 <ArrowLeft className="h-4 w-4 mr-1" /> All tools
               </button>
 
-              <header className="mb-7">
-                <div className="mb-3 grid h-12 w-12 place-items-center rounded-lg bg-indigo-500/10 text-indigo-500">
-                  <tool.icon className="h-6 w-6" />
+              <header className="mb-5 sm:mb-7">
+                <div className="mb-3 grid h-10 w-10 place-items-center rounded-lg bg-indigo-500/10 text-indigo-500 sm:h-12 sm:w-12">
+                  <tool.icon className="h-5 w-5 sm:h-6 sm:w-6" />
                 </div>
-                <h1 className="text-2xl font-bold tracking-tight">{tool.name}</h1>
-                <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+                <h1 className="text-xl font-bold tracking-tight sm:text-2xl">{tool.name}</h1>
+                <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400 sm:text-sm">
                   {tool.description}
                 </p>
               </header>
 
-              <div className="panel p-4 sm:p-6">
+              <div className="panel p-3 sm:p-4 md:p-6">
                 <Tool />
               </div>
             </motion.section>
@@ -169,14 +195,14 @@ export default function Home() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
             >
-              <header className="mb-8">
+              <header className="mb-6 sm:mb-8">
                 <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-indigo-500">
                   BITSANDBYTESDUDE
                 </p>
-                <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                <h1 className="text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl">
                   Your Developer Toolkit
                 </h1>
-                <p className="mt-3 max-w-xl text-zinc-500 dark:text-zinc-400">
+                <p className="mt-2 max-w-xl text-sm text-zinc-500 dark:text-zinc-400 sm:mt-3 sm:text-base">
                   A focused collection of practical tools for developers and designers. Everything runs locally in your browser.
                 </p>
               </header>

@@ -17,12 +17,20 @@
   }
   body {
     @apply min-h-screen bg-white font-sans text-zinc-900 antialiased transition-colors duration-300 dark:bg-[#0A0A0A] dark:text-[#F9FAFB];
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
   }
   button, input, textarea, select {
     font: inherit;
   }
   ::selection {
     @apply bg-indigo-500/30 text-indigo-900 dark:text-indigo-100;
+  }
+  /* Prevent iOS zoom on input focus */
+  @media (max-width: 640px) {
+    input, textarea, select {
+      font-size: 16px !important;
+    }
   }
 }
 
@@ -51,6 +59,20 @@
     filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.85)) drop-shadow(0 0 20px rgba(139, 92, 246, 0.6));
     animation: glow-pulse 3s infinite alternate;
   }
+}
+
+/* Sidebar slide-in animation */
+@keyframes sidebar-slide-in {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.sidebar-slide-in {
+  animation: sidebar-slide-in 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes glow-pulse {

@@ -9,6 +9,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        xs: "480px",
+      },
       colors: {
         accent: "#6366F1",
         secondary: "#8B5CF6",

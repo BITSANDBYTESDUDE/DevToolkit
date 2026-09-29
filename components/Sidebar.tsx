@@ -1,6 +1,6 @@
 "use client";
 
-import { Clock3, Star, Wrench } from "lucide-react";
+import { Clock3, Star, Wrench, X } from "lucide-react";
 import { categories, tools, type ToolCategory, type ToolId } from "@/lib/tools-config";
 import { SearchBar } from "./SearchBar";
 import type { RefObject } from "react";
@@ -15,6 +15,8 @@ export function Sidebar({
   onSelect,
   onGoHome,
   searchRef,
+  mobileOpen,
+  onMobileClose,
 }: {
   query: string;
   setQuery: (q: string) => void;
@@ -25,8 +27,21 @@ export function Sidebar({
   onSelect: (id: ToolId) => void;
   onGoHome: () => void;
   searchRef: RefObject<HTMLInputElement>;
+  mobileOpen?: boolean;
+  onMobileClose?: () => void;
 }) {
   const find = (id: ToolId) => tools.find((t) => t.id === id);
+
+  const handleSelect = (id: ToolId) => {
+    onSelect(id);
+    onMobileClose?.();
+  };
+
+  const handleCategory = (c: ToolCategory | "All") => {
+    setCategory(c);
+    onGoHome();
+    onMobileClose?.();
+  };
 
   const quick = (title: string, ids: ToolId[], Icon: typeof Star) => (
     <>
@@ -40,7 +55,7 @@ export function Sidebar({
                 <button
                   key={id}
                   className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-left text-sm hover:bg-zinc-200 dark:hover:bg-zinc-800"
-                  onClick={() => onSelect(id)}
+                  onClick={() => handleSelect(id)}
                 >
                   <Icon className="h-4 w-4 text-indigo-500" />
                   {t.name}
@@ -53,10 +68,13 @@ export function Sidebar({
     </>
   );
 
-  return (
-    <aside className="fixed inset-y-0 left-0 z-30 hidden w-[260px] flex-col border-r bg-zinc-50/80 p-3 backdrop-blur dark:bg-[#111111]/80 lg:flex">
+  const sidebarContent = (
+    <>
       <button
-        onClick={onGoHome}
+        onClick={() => {
+          onGoHome();
+          onMobileClose?.();
+        }}
         className="mb-5 flex items-center gap-2.5 px-2 text-left transition-opacity hover:opacity-80 focus:outline-none"
         title="Return to Home"
       >
@@ -71,7 +89,7 @@ export function Sidebar({
 
       <SearchBar value={query} onChange={setQuery} inputRef={searchRef} />
 
-      <div className="mt-5 space-y-5 overflow-y-auto pr-1">
+      <div className="mt-5 flex-1 space-y-5 overflow-y-auto pr-1">
         {quick("Favorites", favorites, Star)}
         {quick("Recently Used", recent, Clock3)}
         <section>
@@ -82,10 +100,7 @@ export function Sidebar({
                 ? "bg-indigo-500 text-white"
                 : "hover:bg-zinc-200 dark:hover:bg-zinc-800"
             }`}
-            onClick={() => {
-              setCategory("All");
-              onGoHome();
-            }}
+            onClick={() => handleCategory("All")}
           >
             All tools
           </button>
@@ -97,10 +112,7 @@ export function Sidebar({
                   ? "bg-indigo-500 text-white"
                   : "hover:bg-zinc-200 dark:hover:bg-zinc-800"
               }`}
-              onClick={() => {
-                setCategory(c);
-                onGoHome();
-              }}
+              onClick={() => handleCategory(c)}
             >
               {c}
             </button>
@@ -116,6 +128,39 @@ export function Sidebar({
       >
         18 Tools · BITSANDBYTESDUDE
       </a>
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Desktop sidebar — always visible on lg+ */}
+      <aside className="fixed inset-y-0 left-0 z-30 hidden w-[260px] flex-col border-r bg-zinc-50/80 p-3 backdrop-blur dark:bg-[#111111]/80 lg:flex">
+        {sidebarContent}
+      </aside>
+
+      {/* Mobile sidebar overlay + drawer — visible only when mobileOpen */}
+      {mobileOpen && (
+        <>
+          {/* Backdrop overlay */}
+          <div
+            className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden"
+            onClick={onMobileClose}
+            aria-hidden="true"
+          />
+          {/* Slide-in drawer */}
+          <aside className="fixed inset-y-0 left-0 z-50 flex w-[280px] max-w-[85vw] flex-col border-r bg-zinc-50 p-3 shadow-2xl dark:bg-[#111111] lg:hidden sidebar-slide-in">
+            {/* Close button */}
+            <button
+              className="absolute right-3 top-3 btn-ghost h-8 w-8 p-0"
+              onClick={onMobileClose}
+              aria-label="Close menu"
+            >
+              <X className="h-5 w-5" />
+            </button>
+            {sidebarContent}
+          </aside>
+        </>
+      )}
+    </>
   );
 }
