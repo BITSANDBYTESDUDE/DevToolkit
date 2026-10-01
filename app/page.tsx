@@ -58,6 +58,7 @@ export default function Home() {
   const [favorites, setFavorites] = useState<ToolId[]>([]);
   const [recent, setRecent] = useState<ToolId[]>([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
 
   const filtered = useSearch(query, category);
@@ -136,6 +137,8 @@ export default function Home() {
         searchRef={searchRef}
         onGoHome={goHome}
         onMenuToggle={() => setSidebarOpen((o) => !o)}
+        sidebarCollapsed={sidebarCollapsed}
+        onSidebarCollapseToggle={() => setSidebarCollapsed((c) => !c)}
       />
       <Sidebar
         query={query}
@@ -149,9 +152,10 @@ export default function Home() {
         searchRef={searchRef}
         mobileOpen={sidebarOpen}
         onMobileClose={() => setSidebarOpen(false)}
+        collapsed={sidebarCollapsed}
       />
 
-      <main className="flex-1 mx-auto w-full max-w-7xl px-3 py-6 sm:px-4 sm:py-8 lg:ml-[260px] lg:px-8">
+      <main className={`flex-1 w-full max-w-7xl px-3 py-6 sm:px-4 sm:py-8 md:px-8 transition-all duration-200 ${sidebarCollapsed ? 'md:ml-16' : 'md:ml-64'}`}>
         {/* Mobile-only search bar (visible below sm since Navbar hides it) */}
         <div className="mb-4 sm:hidden">
           <SearchBar value={query} onChange={setQuery} inputRef={searchRef} />
